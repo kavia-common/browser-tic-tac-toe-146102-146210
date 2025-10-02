@@ -1,85 +1,99 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo">TTT</div>
+        <div class="titles">
+          <h1>Tic Tac Toe</h1>
+          <p>Ocean Professional</p>
+        </div>
+      </div>
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <main class="app-main">
+      <RouterView />
+    </main>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <footer class="app-footer">
+      <span>Built with Vue 3 + Vite</span>
+    </footer>
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+:root {
+  --ocean-primary: #2563EB;
+  --ocean-secondary: #F59E0B;
+  --ocean-error: #EF4444;
+  --ocean-surface: #ffffff;
+  --ocean-bg: #f9fafb;
+  --ocean-text: #111827;
+  --ocean-muted: #6b7280;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background:
+    radial-gradient(1000px 600px at 50% -200px, rgba(59,130,246,0.08), rgba(249,250,251,0)) no-repeat,
+    var(--ocean-bg);
+  color: var(--ocean-text);
+}
+
+.app-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 1.25rem 1rem 0.5rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .logo {
-  display: block;
-  margin: 0 auto 2rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(245, 158, 11, 0.12));
+  display: grid;
+  place-items: center;
+  color: var(--ocean-primary);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(37,99,235,0.22);
+  box-shadow: 0 6px 16px rgba(37,99,235,0.12);
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
+.titles h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+
+.titles p {
+  margin: 0;
+  color: var(--ocean-muted);
+  font-size: 0.85rem;
+}
+
+.app-main {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.app-footer {
+  font-size: 0.85rem;
+  color: var(--ocean-muted);
   text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+  padding: 1rem;
 }
 </style>
