@@ -141,7 +141,71 @@ function makeMove(index: number) {
         :aria-label="`Cell ${idx + 1}`"
         @click="makeMove(idx)"
       >
-        <span v-if="cell" class="mark">{{ cell }}</span>
+        <span v-if="cell" class="mark" :class="cell === 'X' ? 'mark-x' : 'mark-o'">
+          <!-- Knight for X -->
+          <svg
+            v-if="cell === 'X'"
+            class="icon icon-knight"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <title>Chess Knight</title>
+            <!-- Base and accents -->
+            <defs>
+              <linearGradient id="gradX" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="rgba(37,99,235,0.15)"/>
+                <stop offset="100%" stop-color="rgba(37,99,235,0.05)"/>
+              </linearGradient>
+            </defs>
+            <rect x="3" y="18.5" width="18" height="2" rx="1" fill="currentColor" opacity="0.25"></rect>
+            <!-- Simplified knight silhouette -->
+            <path
+              d="M8 18c0-2.5 1-3.8 2.8-5.2.7-.6 1.2-1.1 1.2-1.8 0-.6-.4-1.1-.9-1.4-.5-.3-1.1-.3-1.6 0l-.7.4c-.3.2-.7.1-.9-.2-.2-.3-.1-.7.2-.9l.6-.4c.9-.6 2-.8 3-.5 1 .3 1.9 1 2.3 2 .4.9.3 1.9-.1 2.7-.3.6-.8 1.2-1.4 1.7-.9.7-1.5 1.3-1.9 2.1h5.3c.6 0 1 .4 1 1v2H9c-.6 0-1-.4-1-1z"
+              fill="currentColor"
+            />
+            <!-- Ear/neck highlight -->
+            <path
+              d="M14.5 8.2c.6.1 1.1.5 1.4 1 .2.4.7.5 1.1.3.4-.2.5-.7.3-1.1-.5-.9-1.3-1.6-2.3-1.8-1.5-.3-2.9.4-3.7 1.6-.2.3-.2.7.1 1 .3.3.7.2 1-.1.5-.7 1.2-1 2.1-.9z"
+              fill="url(#gradX)"
+            />
+            <!-- Eye -->
+            <circle cx="12.9" cy="9.3" r=".55" fill="currentColor"/>
+          </svg>
+
+          <!-- Queen for O -->
+          <svg
+            v-else
+            class="icon icon-queen"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <title>Chess Queen</title>
+            <defs>
+              <linearGradient id="gradO" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="rgba(245,158,11,0.18)"/>
+                <stop offset="100%" stop-color="rgba(245,158,11,0.06)"/>
+              </linearGradient>
+            </defs>
+            <!-- Base -->
+            <rect x="4" y="19" width="16" height="2" rx="1" fill="currentColor" opacity="0.25"></rect>
+            <!-- Crown body -->
+            <path
+              d="M7 18c.2-2.2 1.3-3.8 2.9-5l2.1 1.6 2.1-1.6c1.6 1.2 2.7 2.8 2.9 5H7z"
+              fill="currentColor"
+            />
+            <!-- Crown points -->
+            <path
+              d="M6.8 9.8l2.3 2.1 2.9-4.6 2.9 4.6 2.3-2.1c.3-.3.8-.2 1 .1.2.3.2.7-.1 1l-2.8 2.6c-.3.3-.8.3-1.1-.1l-2.2-3.6-2.2 3.6c-.2.4-.8.4-1.1.1L5.9 11c-.3-.3-.3-.7-.1-1 .2-.3.7-.4 1-.2z"
+              fill="url(#gradO)"
+            />
+            <!-- Orbs -->
+            <circle cx="6.5" cy="8.2" r="1" fill="currentColor"/>
+            <circle cx="12" cy="7" r="1.1" fill="currentColor"/>
+            <circle cx="17.5" cy="8.2" r="1" fill="currentColor"/>
+          </svg>
+        </span>
       </button>
     </div>
 
@@ -281,6 +345,8 @@ function makeMove(index: number) {
   transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
   box-shadow: var(--shadow-sm);
   user-select: none;
+  position: relative;
+  overflow: hidden;
 }
 
 .cell:hover {
@@ -295,6 +361,49 @@ function makeMove(index: number) {
 
 .cell.x .mark { color: var(--ocean-primary); text-shadow: 0 6px 16px rgba(37,99,235,0.18); }
 .cell.o .mark { color: var(--ocean-secondary); text-shadow: 0 6px 16px rgba(245,158,11,0.18); }
+
+/* Icon styling */
+.mark {
+  display: inline-grid;
+  place-items: center;
+  line-height: 1;
+}
+
+.icon {
+  width: clamp(2.2rem, 9.5vw, 3.4rem);
+  height: clamp(2.2rem, 9.5vw, 3.4rem);
+  filter: drop-shadow(0 6px 16px rgba(17,24,39,0.10));
+}
+
+/* Slight size/playful tweak for emphasis */
+.icon-knight {
+  color: var(--ocean-primary);
+  transform: translateY(1px);
+}
+
+.icon-queen {
+  color: var(--ocean-secondary);
+}
+
+/* Soft radial glow behind icons for emphasis */
+.mark-x::before,
+.mark-o::before {
+  content: "";
+  position: absolute;
+  inset: 14% 14%;
+  border-radius: 16px;
+  z-index: 0;
+  filter: blur(10px);
+  opacity: 0.35;
+}
+
+.mark-x::before { background: radial-gradient(60% 60% at 50% 50%, rgba(37,99,235,0.18), rgba(37,99,235,0)); }
+.mark-o::before { background: radial-gradient(60% 60% at 50% 50%, rgba(245,158,11,0.20), rgba(245,158,11,0)); }
+
+.mark svg {
+  position: relative;
+  z-index: 1;
+}
 
 .cell.win {
   background: linear-gradient(180deg, rgba(37,99,235,0.10), rgba(245,158,11,0.10));
